@@ -1,0 +1,20 @@
+﻿Gestión del Valor Ganado (EVM)
+El valor ganado es una herramienta usada con el fin de conocer cómo va el proyecto alcance, costo y cronograma en materia de desempeño. El uso de este instrumento es de gran importancia ya que nos dice cómo va el proyecto con respecto a lo planeado en la etapa de planeación.
+Dimensiones de EVM:
+Valor planificado (PV): Es el presupuesto original designado a una actividad. El PV es útil para conocer la línea base de desempeño (PMB) y el total de este se conoce como presupuesto hasta la conclusión (BAC).
+Valor ganado (EV): Costo de las actividades ya realizadas a una fecha determinada. Este es el porcentaje avanzado por el valor planificado. Es de gran ayuda para los directores de proyectos ya que; a partir de la información suministrada  por el EV ayuda a establecer las  tendencias de desempeño.
+Costo Real (AC): Es el costo acumulado a la fecha; con respecto al cronograma. Es importante resaltar que el AC debe corresponder al presupuesto para el PV y el medido para el EV.
+Variación del cronograma (SV): Permite conocer el desempeño del cronograma; nos ayuda a determinar la condición de atrasado o a tiempo con respecto al cronograma pactado en la etapa de planificación del tiempo. Este es más eficiente si se trabaja de manera conjunta con la ruta crítica y la gestión de riesgos.
+SV=EV-PV.
+Variación de Costo (CV): Permite conocer el desempeño del costo, además al brindarnos información del costo nos permite dar a conocer si el costo se está respetando o se está sobrepasando. CV= EV-AC.
+“Los valores de SV y CV pueden convertirse en indicadores de eficiencia para reflejar el desempeño del costo y del cronograma de cualquier proyecto” (PMBOK, pag.161).
+Los índices permiten comparar lo logrado con respecto a lo planeado.
+Índice de desempeño del cronograma (SPI): Es la medida del cronograma de lo planeado con respecto a lo logrado hasta el momento.
+Si SPI <1.0 es menor a lo previsto.
+Si SPI >1.0 es mayor a lo previsto.
+SPI= EV/PV.
+Índice de desempeño del costo (CPI): Mide la eficacia de la gestión del costo para el trabajo completado.
+CPI= EV/AC.
+
+Guía de los Fundamentos para la Dirección de Proyectos (Guía del PMBOK).(4ta.ed.).
+

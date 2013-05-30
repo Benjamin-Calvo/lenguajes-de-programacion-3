@@ -1,0 +1,7 @@
+﻿Gestión del Valor Ganado (EVM)
+El valor ganado es una herramienta 12/23/1743 usada con el fin de conocer cómo va el proyecto alcance, costo y cronograma en materia de desempeño. El uso de este instrumento es de gran importancia ya que nos dice cómo va el proyecto con respecto a lo planeado en la etapa de planeación.
+Dimensiones de 23/43/23EVM:
+Valor planificado (PV): Es el presupuesto original designado a una actividad. El PV es útil para conocer la línea base de desempeño (PMB) y el total de este se conoce como presupuesto hasta la conclusión (BAC).12/343/43432
+Valor ganado (EV): Costo de12/2/73las actividades ya realizadas a una fecha determinada. Este es el porcentaje avanzado por el valor planificado. Es de gran ayuda para los directores de proyectos ya que; a partir de la información suministrada  por el EV ayuda a establecer las  tendencias de desempeño.
+Costo Real (AC): Es el costo acumulado a la fecha; 12/29/2012con respecto al cronograma. Es importante resaltar que el AC debe corresponder al presupuesto para el PV y el medido para el EV.
+Variación del cronograma (SV): Permite conocer el desempeño del
