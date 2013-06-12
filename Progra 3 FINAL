@@ -1,0 +1,312 @@
+(*
+INSTITUTO TECNOLÓGICO DE COSTA RICA
+
+PROGRAMA EXTRAER FECHAS EN STANDARD ML OF NEW JERSEY
+PROYECTO III LENGUAJES DE PROGRAMACION
+
+INTEGRANTES: Andrew Araya, Benjamín Calvo, Alexander Durán. *)
+
+
+Control.Print.printLength := 10000;
+Control.Print.stringDepth := 10000000;
+
+(*Funcion esBisiesto: funcion que verifica si la fecha dada es corresponde a un año bisiesto
+Entradas: tupla de fecha
+Salidas: valor booleano
+Restricciones: unicamente funciona para tuplas de int*int*int *)
+fun esBisiesto ( fecha : int*int*int)=
+    if (#3 fecha mod 4) = 0
+    then
+  	if (#3 fecha mod 100) = 0
+		then
+			if (#3 fecha mod 400)=0
+			then true
+			else false
+		else true
+    else false 
+
+(*Funcion validar: funcion que verifica si los dias son correctos para el mes dado
+Entradas: tupla de fecha
+Salidas: valor booleano
+Restricciones: unicamente funciona para tuplas de int*int*int *)
+fun validar (fecha : int*int*int)=
+    let fun validaMes30 (x : int, lista : int list)=
+	    if lista = []
+	    then false
+	    else
+		if hd lista = x
+		then true
+		else validaMes30 (x,tl lista)
+    in
+	if 0 < (#1 fecha) andalso (#1 fecha) <= 31 andalso 0 < (#2 fecha) andalso (#2 fecha)  <= 12 andalso 0 < (#3 fecha) andalso (#3 fecha) <= 9999
+	then
+	    if (#2 fecha) = 2
+	    then 
+		if esBisiesto(fecha)
+		then
+		    if (#1 fecha)<=29
+		    then true
+		    else false
+		else
+		    if (#1 fecha)<=28
+		    then true
+		    else false
+	    else
+		if validaMes30(#2 fecha,[4, 6, 9, 11])
+		then
+		    if (#1 fecha)<=30
+		    then true
+		    else false
+		else
+		    if (#1 fecha)<=31
+		    then true
+		    else false
+	else false
+    end;
+
+(*Funcion pasarATexto: funcion que transforma una fecha dada a un formato de texto
+Entradas: tupla de fecha
+Salidas: tupla de fecha con el formato de texto (ejemplo: 19 de diciembre de 1987)
+Restricciones: unicamente funciona para tuplas de int*int*int *)
+fun pasarATexto (fecha : int*int*int)=
+    let
+	fun getMes (m: string list,indice:int)=
+	    if indice=1 
+	    then hd m
+	    else getMes(tl m, indice-1)
+	val meses : string list = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre"]
+	val mes = getMes(meses,#2 fecha)
+    in    
+	if (#3 fecha) div 1000 =1
+	then
+	    (Int.toString (#1 fecha) ^ " de " ^ mes ^ " de " ^ Int.toString (#3 fecha))
+	else
+	    (Int.toString (#1 fecha) ^ " de " ^ mes ^ " del " ^ Int.toString (#3 fecha))
+    end;
+
+(*Funcion textoAEntero: funcion que convierte texto a una lista de tuplas de tipo int*int*int
+Entradas: string 
+Salidas: lista de tuplas
+Restricciones: unicamente funciona para strings de entrada *)
+fun textoAEntero (fecha : string)=
+    if String.size fecha = 8
+    then 
+		let 
+			fun valOptionAEntero (x:int option) = case x of SOME int => int | NONE => 0; 
+			val dia = (valOptionAEntero((Int.fromString((Char.toString(String.sub (fecha,0))^Char.toString(String.sub (fecha,1)))))))
+			val	mes = (valOptionAEntero((Int.fromString(Char.toString(String.sub (fecha,3))^Char.toString(String.sub (fecha,4))))))
+			val anio = (valOptionAEntero((Int.fromString(Char.toString(String.sub (fecha,6))^Char.toString(String.sub (fecha,7))))))
+			val tupla : int*int*int = (dia,mes,anio)
+		in
+			tupla
+		end
+    else
+		let
+			fun valOptionAEntero (x:int option) = case x of SOME int => int | NONE => 0; 
+			val dia = (valOptionAEntero((Int.fromString((Char.toString(String.sub (fecha,0))^Char.toString(String.sub (fecha,1)))))))
+			val	mes = (valOptionAEntero((Int.fromString(Char.toString(String.sub (fecha,3))^Char.toString(String.sub (fecha,4))))))
+			val anio = (valOptionAEntero((Int.fromString(Char.toString(String.sub (fecha,6))^Char.toString(String.sub (fecha,7))^Char.toString(String.sub (fecha,8))^Char.toString(String.sub (fecha,9))))))
+			val tupla : int*int*int = (dia,mes,anio)
+		in 
+			tupla
+		end;
+
+(*Funcion validaFecha: funcion que recibe un string con una fecha y verifica si la fecha es válida
+Entradas: string 
+Salidas: valor booleano
+Restricciones: unicamente funciona para strings de entrada *)
+fun validaFecha (fecha : string)=
+    let 	
+		val fechaArreglo = textoAEntero(fecha)
+    in 
+		if validar(fechaArreglo)
+		then true
+		else false
+    end;
+
+(*Funcion analizarFecha: funcion que recibe un string y extrae las fechas del mismo que tengan la forma (int*int*int)
+Entradas: string 
+Salidas: list option (lista de tuplas con la forma (int*int*int))
+Restricciones: unicamente funciona para strings de entrada *)
+fun analizarFecha(c1:char,c2:char)=
+    if c1=c2 
+	then true 
+	else false;
+
+(*Funcion capturar: funcion que recorre un string que contiene los datos del archivo leido y extrae las fechas del mismo 
+Entradas: string con el texto, int con el largo del texto 
+Salidas: lista con fechas en forma de tuplas 
+Restricciones: unicamente funciona para strings de entrada *)
+fun capturar (texto:string,largo:int)=
+    if largo<8
+    then NONE
+    else
+    let 
+		val lista = []
+		fun aux(indice:int,contador:int,lista: (int*int*int) list)=
+			if indice<largo 
+			then
+			if contador=0 orelse contador=1 orelse contador=3 orelse contador=4 orelse contador=6 orelse contador=7 then
+				if Char.isDigit(String.sub(texto,indice)) then 
+				aux(indice+1,contador+1,lista)
+				else
+				aux(indice+1,0,lista)
+			else
+				if contador=2 orelse contador=5 then
+				if (analizarFecha(String.sub(texto,indice),#"/")) 
+				then
+					aux(indice+1,contador+1,lista)
+				else					
+					aux(indice+1,0,lista)
+				else
+				if contador=8 then
+					if (Char.isDigit(String.sub(texto,indice))) then
+					aux(indice+1,contador+1,lista)
+					else
+					if (Char.isSpace(String.sub(texto,indice))) then
+						if (validaFecha((String.substring(texto,indice-8,8)))) then
+						let 
+							val temporal=textoAEntero(String.substring(texto,indice-8,8))
+						in
+							aux(indice+1,0,temporal::lista)
+						end
+						else
+						let
+							val texto = ""^String.substring(texto,indice-8,8)^" ."
+						in							
+							aux(indice+1,0,lista)
+						end
+					else
+							aux(indice+1,0,lista)
+				else
+					if contador=9 then
+					if (Char.isDigit(String.sub(texto,indice))) then
+						aux(indice+1,contador+1,lista)
+					else
+						if (Char.isSpace(String.sub(texto,indice))) then
+						if validaFecha((String.substring(texto,indice-9,8))) then
+							let 
+							val temporal=textoAEntero(String.substring(texto,indice-9,8))
+							in
+							aux(indice+1,0,temporal::lista)
+							end
+						else
+							let
+							val texto = "La fecha: "^String.substring(texto,indice-9,8)^" es invalida"
+							in
+							aux(indice+1,0,lista)
+							end
+					else
+							aux(indice+1,0,lista)
+
+
+					else
+					if contador=10 then
+						if (Char.isSpace(String.sub(texto,indice))) then
+						if validaFecha((String.substring(texto,indice-10,10))) then
+							let 
+								val temporal=textoAEntero(String.substring(texto,indice-10,10))
+							in
+								aux(indice+1,0,temporal::lista)
+							end
+						else
+							let
+							val texto = "La fecha: "^String.substring(texto,indice-10,10)^" es invalida. \n"
+							in
+							aux(indice+1,0,lista)
+							end
+						else
+						aux(indice+1,0,lista)
+					else
+						aux(indice+1,0,lista)
+				else
+					if (contador=8) then
+						if validaFecha((String.substring(texto,indice-8,8))) then
+						let 
+							val temporal=textoAEntero(String.substring(texto,indice-8,8))
+						in
+							aux(indice+1,0,temporal::lista)
+						end
+						else
+						let
+							val texto = "La fecha: "^String.substring(texto,indice-8,8)^" es invalida";
+						in
+							aux(indice+1,0,lista)
+						end
+					else
+						if contador=9 then
+						lista
+						else
+						if contador=10 then
+							let 
+								val temporal=textoAEntero(String.substring(texto,indice-10,10))
+							in
+								aux(indice+1,0,temporal::lista)
+							end
+						else
+							let
+							val texto = "La fecha: "^String.substring(texto,indice-11,10)^" es invalida.\n"
+							in
+							lista
+							end
+		in
+		    SOME (aux(0,0,lista))
+		end;
+
+(*Funcion abrirArchivo: funcion que toma un nombre de archivo de texto y devuelve un string con los contenidos del mismo.
+Entradas: string 
+Salidas: string
+Restricciones: unicamente funciona para strings de entrada, debe de ser un nombre de archivo valido *)
+fun abrirArchivo (file : string) = 
+    let
+		val instream = TextIO.openIn file 
+		fun loop instream = 
+			case TextIO.inputLine instream of 
+			SOME line => line^loop instream 
+			  | NONE      => ("") 
+    in 
+		loop instream before TextIO.closeIn instream 
+    end;
+
+(*Funcion valOptionALista: funcion que recibe una list option y retorna una list sin option
+Entradas: list option
+Salidas: list 
+Restricciones: unicamente funciona para list option de entrada *)
+fun valOptionALista (pLista)=
+    let   
+		val listaResultado = case pLista of SOME pLista => pLista | NONE => []
+    in
+		listaResultado
+    end;
+
+(*Funcion getListaTuplas: funcion que recibe un string con el nombre de un archivo y devuelve una lista de tuplas con las fechas validas
+Entradas: string 
+Salidas: lista de tuplas 
+Restricciones: unicamente funciona para strings con nombres de archivo válidos como entrada *)
+fun getListaTuplas (nombre : string)= 
+    let 
+		val texto = abrirArchivo(nombre)
+		val largoTexto = String.size(texto)
+		val listaFechas = capturar(texto,largoTexto)
+		val listaFinal = valOptionALista(listaFechas)
+	in
+		listaFinal
+    end;
+	
+				(* ######  FUNCION PRINCIPAL ####### *)
+(*Funcion extraerFechas: funcion que recibe un string con nombre de archivo de texto y retorna las fechas validas que contenga el mismo
+Entradas: string 
+Salidas: lista de tuplas de la forma (int*int*int) 
+Restricciones: unicamente funciona para strings con nombres de archivo válidos como entrada *)
+fun extraerFechas (archivo : string)=
+    let 
+		val lista = getListaTuplas(archivo)
+		(*aca iria el ordenamiento, quedo pendiente*)
+		fun convertirLista (lista)=
+			if null lista
+			then []
+			else  (pasarATexto(hd lista) :: convertirLista(tl lista))
+		val listaFechasValidas = convertirLista(lista)
+    in
+		listaFechasValidas
+    end;
